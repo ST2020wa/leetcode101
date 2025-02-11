@@ -1,7 +1,5 @@
-// self learning, using javascript to solve leetcode_101 chanllenges
-// reference: https://github.com/changgyhub/leetcode_101/
-
 /* Chapter 1_Greedy Algorithm */
+
 // https://leetcode.com/problems/assign-cookies/
 let cookieKid = (cookies, kids) => {
     //sort, index, length, loop, get target index, return
