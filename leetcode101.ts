@@ -32,3 +32,70 @@ let candy = function(ratings) {
   }
   return candies.reduce((a, c) => a + c, 0);
 };
+
+//https://leetcode.com/problems/non-overlapping-intervals/
+let eraseOverlapIntervals = function(intervals) {
+  intervals.sort((a, b) => a[1] - b[1]);
+  let removed = 0;
+  let compared = intervals[0][1];
+  for(let i = 1; i<intervals.length;i++){
+      if(intervals[i][0]<compared){
+          removed++;
+      }else{
+          compared = intervals[i][1];
+      }
+  }
+  return removed;
+};
+
+//https://leetcode.com/problems/can-place-flowers/
+let canPlaceFlowers = function(flowerbed, n) {
+  let canPlace = 0;
+  if(flowerbed.length<3){
+      if(flowerbed.find((e)=> e===1)){
+          canPlace=0;
+      }else{
+          canPlace++;
+      }
+  }else{
+          for(let i=0; i<flowerbed.length; i++){
+      if(i===0){
+          if(flowerbed[i]===0&&flowerbed[i+1]===0){
+              flowerbed[i]=1;
+              canPlace++;
+          }
+      }else if(i===flowerbed.length-1){
+          if(flowerbed[i-1]===0 && flowerbed[i]===0){
+              canPlace++;
+          }
+      } else if (flowerbed[i-1]===0&&flowerbed[i]===0&&flowerbed[i+1]===0){
+              canPlace++;
+              flowerbed[i]=1;
+          }
+  }
+  }
+  return canPlace>=n;
+};
+
+//better solution
+let canPlaceFlowers2 = function(flowerbed, n) {
+  let canPlace = 0;
+  
+  // Loop through the flowerbed
+  for (let i = 0; i < flowerbed.length; i++) {
+      // Check if we can place a flower in the current spot
+      if (flowerbed[i] === 0 &&
+          (i === 0 || flowerbed[i - 1] === 0) && // No flower on the left
+          (i === flowerbed.length - 1 || flowerbed[i + 1] === 0)) { // No flower on the right
+          flowerbed[i] = 1; // Place a flower here
+          canPlace++;
+      }
+      
+      // Early exit if we've placed enough flowers
+      if (canPlace >= n) {
+          return true;
+      }
+  }
+  
+  return canPlace >= n; // Return if we placed enough flowers
+};
