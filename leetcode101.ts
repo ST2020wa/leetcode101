@@ -99,3 +99,22 @@ let canPlaceFlowers2 = function(flowerbed, n) {
   
   return canPlace >= n; // Return if we placed enough flowers
 };
+
+//https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+let findMinArrowShots = function(points) {
+    //1-sort; 2-find intersection (1 -> update smaller intersection; 0 -> shots+1, reassign intersection)
+    points.sort((a,b)=> a[1]-b[1]);
+    let shots = 1;
+    if(points.length > 1){
+        let x=points[0];
+        for(let i = 0; i<points.length-1; i++){
+            if(x[1] >= points[i+1][0]){
+                x = [Math.max(x[0], points[i+1][0]),Math.min(x[1], points[i+1][1])]
+            }else{
+                x = points[i+1]
+                shots++;
+            }
+        }
+    }
+    return shots;
+}
