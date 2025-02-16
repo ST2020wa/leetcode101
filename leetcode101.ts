@@ -118,3 +118,21 @@ let findMinArrowShots = function(points) {
     }
     return shots;
 }
+
+//https://leetcode.com/problems/partition-labels/
+let partitionLabels = function(s) {
+    let arr = [];
+    let lastIndex = {};
+    let start=0,end = 0;
+    for(let i = 0; i< s.length; i++){
+        lastIndex[s[i]]=i;
+    };
+    for(let j = 0; j<s.length; j++){
+        end = Math.max(end, lastIndex[s[j]]);
+        if(j===end){
+            arr.push(j-start+1);
+            start = j+1;
+        }
+    }
+    return arr;
+};
