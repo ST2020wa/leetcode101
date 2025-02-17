@@ -121,9 +121,9 @@ let findMinArrowShots = function(points) {
 
 //https://leetcode.com/problems/partition-labels/
 let partitionLabels = function(s) {
-    let arr = [];
+    let arr: number[] = [];
     let lastIndex = {};
-    let start=0,end = 0;
+    let start=0; let end = 0;
     for(let i = 0; i< s.length; i++){
         lastIndex[s[i]]=i;
     };
@@ -135,4 +135,16 @@ let partitionLabels = function(s) {
         }
     }
     return arr;
+};
+
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
+// As it doesn't have transaction limit, we can just add all the positive differences
+let maxProfit = function(prices) {
+    let maxOutput = 0;
+    for(let i = 1; i<prices.length; i++){
+        if(prices[i]>=prices[i-1]){
+            maxOutput = prices[i]-prices[i-1]+maxOutput
+        }
+    }
+    return maxOutput;
 };
