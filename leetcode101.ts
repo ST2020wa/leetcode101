@@ -191,3 +191,41 @@ let merge = function(nums1, m, nums2, n) {
         p--;
     }
 };
+
+//TO REVIEW
+// https://leetcode.com/problems/minimum-window-substring/
+let minWindow = function(s, t) {
+    // edge case? s.length<t.length
+    let tMap = new Map(); // tMap: count t's chars
+    for(let i of t){
+        tMap.set(i, (tMap.get(i) || 0)+1)
+    }
+    let left = 0;
+    let right = 0;
+    let required = tMap.size; // number of unique chars in t
+    let formed = 0; // number of unique chars in current window that match t's requirement
+    let wMap = new Map(); // fq map for current window
+    let result = [Infinity, 0, 0]
+    // since the loop amount is unknown, use while instead of for
+    while(right < s.length){
+        let char = s[right];
+        wMap.set(char, (wMap.get(char) || 0)+1);
+        if(tMap.has(char) && wMap.get(char)===tMap.get(char)){
+            formed++;
+        };
+        while(left<=right && formed === required){
+            char = s[left];
+            if(right-left+1<result[0]){
+                result = [right - left +1, left, right];
+            }
+            wMap.set(char, wMap.get(char)-1);
+            if(tMap.has(char) && wMap.get(char)<tMap.get(char)){
+            formed--;
+            // this is to check if the left pointer remove the needed char, if so, this formed is reduced and the loop ends. therefore the result from last loop cycle will be used.
+            };
+            left++;
+        };
+        right++;
+    }
+    return result[0] === Infinity ? "" : s.substring(result[1], result[2]+1);
+};
