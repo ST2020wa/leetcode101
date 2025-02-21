@@ -192,7 +192,6 @@ let merge = function(nums1, m, nums2, n) {
     }
 };
 
-//TO REVIEW
 // https://leetcode.com/problems/minimum-window-substring/
 let minWindow = function(s, t) {
     // edge case? s.length<t.length
@@ -228,4 +227,26 @@ let minWindow = function(s, t) {
         right++;
     }
     return result[0] === Infinity ? "" : s.substring(result[1], result[2]+1);
+};
+
+//https://leetcode.com/problems/linked-list-cycle-ii/
+let detectCycle = function(head) {
+    let isFirstRound = true;
+    let fast = head;
+    let slow = head;
+    while(fast !== slow || isFirstRound){
+        if(fast !== null && fast.next !== null){
+            slow = slow.next;
+        fast = fast.next.next;
+        }else{
+            return null;
+        }
+        isFirstRound = false;
+    };
+    fast = head;
+    while(fast !== slow){
+        fast = fast.next;
+        slow = slow.next;
+    }
+    return fast;
 };
