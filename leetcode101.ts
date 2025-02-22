@@ -250,3 +250,76 @@ let detectCycle = function(head) {
     }
     return fast;
 };
+
+//https://leetcode.com/problems/sum-of-square-numbers/
+let judgeSquareSum = function(c) {
+    let a = 0;
+    let b = Math.round(Math.sqrt(c));
+    let result = false;
+    while(a<=b && b>=0){
+        let sum = a*a + b*b;
+        if(sum === c){
+            result = true;
+            break;
+        } else if(sum > c){
+            b--;
+        }else if (sum < c){
+            a++;
+        }
+    }
+    return result;
+};
+
+//https://leetcode.com/problems/valid-palindrome-ii/
+{let validPalindrome = function(s) {
+    let left = 0;
+    let right = s.length-1;
+
+    while(left<right){
+        if(s[left]!==s[right]){
+            return isValidPalindrome(s, left+1, right)||isValidPalindrome(s, left, right-1);
+        }
+        left++;
+        right--;
+    }
+    return true;
+};
+
+// using the helper function below to find substring on both path (test case s="eceec")
+function isValidPalindrome(s, l, r){
+    while(l<r){
+        if(s[l]!==s[r]){
+            return false;
+        }
+        l++;
+        r--;
+    }
+    return true;
+}}
+
+// https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/
+let findLongestWord = function(s, dictionary) {
+    let longest = '';
+    // 1-sort is expensive; 2-some words can be removed based on length; check description carefully for smallest lexicographical order
+    for(let word of dictionary){
+        // skip words longer than s or shorter than the current longest word
+        if(word.length > s.length || word.length < longest.length){
+            continue;
+        };
+        let i = 0; // dictionary's word pointer
+        let j = 0; // s pointer
+        while(i < word.length && j < s.length){
+            if(word[i]===s[j]){
+                i++;
+            }
+            j++;
+        };
+        if(i===word.length){
+            // this means word is a substring of s, then check its length
+            if(word.length>longest.length ||(word.length === longest.length && word < longest)){
+                longest = word; // need compare same length words LEXICOGRAPHICAL ORDER based on description
+            }
+        }
+    };
+    return longest;
+};
