@@ -323,3 +323,27 @@ let findLongestWord = function(s, dictionary) {
     };
     return longest;
 };
+
+/* Chapter 3_Binary Search */
+//https://leetcode.com/problems/sqrtx/description/
+// (to be optimized)
+let mySqrt = function(x) {
+    let m = 0;
+    if(x<=1){
+        m = x;
+        return m;
+    }else{
+        while(m<=x){
+            let n = m*m;
+            if(n<x){
+                m++;
+            } else if (n===x){
+                return m;
+                break;
+            } else if (n>x) {
+                return m-1;
+                break;
+            }
+        }
+    }
+};
