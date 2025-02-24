@@ -347,3 +347,62 @@ let mySqrt = function(x) {
         }
     }
 };
+
+//https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+let findLeft = (nums, target)=>{
+    let left = 0;
+    let r = nums.length;
+    while(left<r){
+        let m = Math.floor((left+r)/2);
+        if(nums[m]<target){
+            left = m+1;
+        }else{
+            r = m;
+        }
+    }
+    return left;
+};
+let findRight = (nums, target)=>{
+    let l = 0;
+    let right = nums.length;
+    while(l<right){
+        let m = Math.floor((l+right)/2);
+        if(nums[m]<=target){
+            l = m+1;
+        }else{
+            right = m;
+        };
+    };
+    return right;
+}
+let searchRange = function(nums, target) {
+    let left = findLeft(nums, target);
+    let right = findRight(nums, target)-1;
+    if(nums.length === 0 || left === nums.length || left>right){
+        return [-1, -1]
+    }else{
+        return [left, right];
+    }
+};
+
+//https://leetcode.com/problems/find-peak-element/description/
+let findPeakElement = function(nums) {
+    if(nums[0]>nums[1] || nums.length===1){
+        return 0;
+    }else if(nums[nums.length-1] > nums[nums.length-2]){
+        return nums.length-1;
+    }else{
+        let i = 1;
+        let j = nums.length-2;
+        while(i<=j){
+            let k = Math.round((i+j)/2)
+            if(nums[k]>nums[k+1] && nums[k]>nums[k-1]){
+                return k;
+            }else if(nums[k]>nums[k-1]){
+                i = k+1;
+            }else{
+                j = k-1;
+            }
+        }
+    }
+};
