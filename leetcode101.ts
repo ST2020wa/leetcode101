@@ -395,7 +395,7 @@ let findPeakElement = function(nums) {
         let i = 1;
         let j = nums.length-2;
         while(i<=j){
-            let k = Math.round((i+j)/2)
+            let k = Math.floor((i+j)/2)
             if(nums[k]>nums[k+1] && nums[k]>nums[k-1]){
                 return k;
             }else if(nums[k]>nums[k-1]){
@@ -405,4 +405,57 @@ let findPeakElement = function(nums) {
             }
         }
     }
+};
+
+//https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+let search = function(nums, target) {
+    let l = 0;
+    let r = nums.length-1;
+    while(l<=r){
+        let m = Math.floor((l+r)/2);
+        if(nums[m]===target){
+            return true;
+        }else if(nums[l]===nums[m]){
+            l++;
+        }else if (nums[r]===nums[m]){
+            r--;
+        }else{
+            if(nums[m]<nums[r]){
+                if(nums[m]<target&&target<=nums[r]){
+                    l = m+1;
+                }else{
+                    r = m-1;
+                }
+            }else{
+                if(nums[l]<=target&&target<nums[m]){
+                    r = m-1;
+                }else{
+                    l = m+1;
+                }
+            }
+        }
+    }
+    return false;
+};
+
+//https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
+let findMin = function(nums) {
+    let l = 0;
+    let r = nums.length-1;
+    let min=nums[0];
+    while(l<=r){
+        let m = Math.floor((l+r)/2);
+        if(nums[m]===nums[l] && nums[m]===nums[r]){
+            // If encounter duplicates, shrink the search space by moving `l` or `r`
+            min = Math.min(min, nums[m])
+            l++;
+            r--;
+        }else if(nums[m]<=nums[r]){
+            min = Math.min(min, nums[m]);
+            r = m-1;
+        }else{
+            l = m+1;
+        }
+    }
+    return min;
 };
