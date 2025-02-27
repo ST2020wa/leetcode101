@@ -459,3 +459,42 @@ let findMin = function(nums) {
     }
     return min;
 };
+
+//https://leetcode.com/problems/single-element-in-a-sorted-array/
+// this is resolve in Time Complexity: O(n) and Space Complexity: O(1)
+let singleNonDuplicate1 = function(nums) {
+    let l = 0;
+    let r = nums.length-1;
+    if(nums.length === 1){
+     return nums[0]
+    }else{
+        while(l<=r){
+     if(nums[l]===nums[l+1]&&nums[r]===nums[r-1]){
+         l = l+2;
+         r = r-2;
+     }else if(nums[l]===nums[l+1]&&nums[r]!==nums[r-1] || l === r){
+         return nums[r];
+     }else if(nums[r]===nums[r-1]&&nums[l]!==nums[l+1]){
+         return nums[l];
+     }
+    }
+    }
+ };
+
+ // for particiular requirement on complexity, use binary search to reach time complexity O(logn)
+ let singleNonDuplicate2 = function(nums) {
+    let l = 0;
+    let r = nums.length-1;
+    while (l<r){
+     let m = Math.floor((l+r)/2);
+     if(m%2===1){
+         m--;
+     }
+     if(nums[m]===nums[m+1]){
+         l = m+2;
+     }else{
+         r = m;
+     }
+    }
+    return nums[l];
+ };
