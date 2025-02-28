@@ -498,3 +498,68 @@ let singleNonDuplicate1 = function(nums) {
     }
     return nums[l];
  };
+
+ //https://leetcode.com/problems/kth-largest-element-in-an-array/description/
+ let findKthLargest = function(nums, k) {
+    // p = Math.floor(Math.random()*(max-min+1)+min), max: nums.length-1, min: 0
+    let p = Math.floor(Math.random() * nums.length)
+    let high = [], equal = [], low = [];
+    for(let n of nums){
+        if(n>nums[p]){
+            high.push(n)
+        }else if(n===nums[p]){
+            equal.push(n)
+        }else{
+            low.push(n)
+        }
+    }
+    if(k<=high.length){
+        return findKthLargest(high, k)
+    }else if(k>(high.length + equal.length)){
+        return findKthLargest(low, (k-high.length-equal.length))
+    }else{
+        return nums[p]
+    }
+};
+
+//https://leetcode.com/problems/top-k-frequent-elements/
+let topKFrequent = function(nums, k) {
+    let store = new Map(); // key: item in nums, value: item's frequency
+    for(let n of nums){
+        if(store.has(n)){
+            store.set(n, store.get(n)+1);
+        }else{
+            store.set(n,1);
+        }
+    }
+    let sortByFrequency = [...store].sort((a,b)=> b[1]-a[1])
+    let tops: (typeof sortByFrequency[0][0])[] = [];
+    let i = 0;
+    while(k>0){
+        tops.push(sortByFrequency[i][0]);
+        k--;
+        i++;
+    }
+    return tops;
+};
+
+//https://leetcode.com/problems/sort-characters-by-frequency/
+let frequencySort = function(s) {
+    let store = []; // [character, frequency][]
+    for(let char of s){
+     let el = store.find((el) => el[0] === char);
+     if(el){
+         el[1]++;
+     }else{
+         store.push([char, 1])
+     }
+    };
+    store.sort((a,b)=> b[1]-a[1]);
+    let result = '';
+    store.forEach((data)=>{
+     for(let i = 1; i<=data[1]; i++){
+         result = result.concat('',data[0])
+     }
+    })
+    return result;
+ };
