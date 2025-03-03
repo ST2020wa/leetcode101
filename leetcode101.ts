@@ -564,3 +564,73 @@ let frequencySort = function(s) {
     })
     return result;
  };
+
+ /* Search */
+ //https://leetcode.com/problems/max-area-of-island/
+ // resolution 1: DFS stack (runtime 2ms, memory 57.9mb)
+ let maxAreaOfIsland1 = function(grid) {
+    const direction = [-1, 0, 1, 0, -1];
+    let m = grid.length, n = grid[0].length, maxArea = 0;
+    for(let i=0;i<m;i++){
+        for(let j=0;j<n;j++){
+            if(grid[i][j]){
+                let island = [];
+                let localArea=1;
+                grid[i][j]=0;
+                island.push([i,j]);
+                while(island.length){
+                    let [r, c] = island.pop();
+                    for(let k=0; k < 4; k++){
+                        let x = r+direction[k], y=c+direction[k+1];
+                        if((x>=0&&x<m)&&(y>=0&&y<n)&&(grid[x][y]===1)){
+                            localArea++;
+                            grid[x][y]=0;
+                            island.push([x,y])
+                        }
+                    }
+                }
+                maxArea=Math.max(maxArea,localArea)
+            }
+        }
+    }
+    return maxArea;
+};
+
+//resolution 2: recursion (runtime 3ms, memory 56.45mb)
+let dfs=(grid, r, c)=>{
+    if(r<0 || r>=grid.length || c<0 ||c>=grid[0].length || grid[r][c]===0){
+        return 0;
+    };
+    grid[r][c]=0;
+    return(1+dfs(grid,r+1,c)+dfs(grid,r-1,c)+dfs(grid,r,c+1)+dfs(grid,r,c-1))
+};
+let maxAreaOfIsland2 = function(grid) {
+    let maxArea = 0;
+    for(let i=0; i<grid.length; i++){
+        for(let j = 0; j<grid[0].length; j++){
+            maxArea = Math.max(maxArea, dfs(grid, i,j))
+        }
+    }
+    return maxArea;
+};
+
+//https://leetcode.com/problems/number-of-provinces/
+let dfs1=(isConnected, city, visited)=>{
+    visited.add(city);
+    for(let i=0; i<isConnected.length; i++){
+        if(isConnected[city][i] && !visited.has(i)){
+            dfs(isConnected, i, visited)
+        }
+    }
+ }
+let findCircleNum = function(isConnected) {
+    let count = 0;
+    let visited = new Set();
+    for(let i = 0;i<isConnected.length; i++){
+        if(!visited.has(i)){
+            dfs1(isConnected,i,visited)
+            count++
+        }
+    }
+    return count;
+};
