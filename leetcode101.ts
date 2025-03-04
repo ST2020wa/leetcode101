@@ -634,3 +634,58 @@ let findCircleNum = function(isConnected) {
     }
     return count;
 };
+
+//https://leetcode.com/problems/pacific-atlantic-water-flow/description/
+let direction = [-1,0,1,0,-1];
+let oceanDfs = (heights, canReach, r, c)=>{
+    if(canReach[r][c]){
+        return;
+    };
+    canReach[r][c]=true;
+    for(let i = 0;i<4;i++){
+        let x=r+direction[i], y=c+direction[i+1]
+        if((x>=0&&x<heights.length)&&(y>=0&&y<heights[0].length)&&(heights[x][y]<=heights[r][c])){
+            oceanDfs(heights, canReach, x, y)
+        }
+    }
+}
+let pacificAtlantic = function(heights) {
+    let m = heights.length, n=heights[0].length;
+    const canReachP = Array.from({ length: m }, () => Array(n).fill(false));
+    const canReachA = Array.from({ length: m }, () => Array(n).fill(false));
+    for(let i=0;i<m;i++){
+        oceanDfs(heights, canReachP, i, 0);
+        oceanDfs(heights, canReachA, i, n-1);
+    };
+    for(let j=0;j<n;j++){
+        oceanDfs(heights, canReachP, 0, j);
+                oceanDfs(heights, canReachA, m-1,j);
+    }
+    const canReach = [];
+    for(let i = 0; i<m; i++){
+        for(let j = 0; j<n; j++){
+            if(canReachA[i][j]&&canReachP[i][j]){
+                canReach.push([i,j])
+            }
+        }
+    }
+    return canReach;
+};
+
+//https://leetcode.com/problems/permutations/
+let subPermute = (nums, level, permuteResult)=>{
+    if(level === nums.length-1){
+        permuteResult.push([...nums]);
+    }else{
+        for(let i = level; i<nums.length; i++){
+            [nums[level], nums[i]] = [nums[i], nums[level]];
+            subPermute(nums, level+1, permuteResult);
+            [nums[i], nums[level]] = [nums[level], nums[i]];
+        }
+    }
+ }
+let permute = function(nums) {
+    let result = [];
+    subPermute(nums, 0, result);
+    return result;
+};
