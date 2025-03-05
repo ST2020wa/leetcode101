@@ -689,3 +689,20 @@ let permute = function(nums) {
     subPermute(nums, 0, result);
     return result;
 };
+
+//https://leetcode.com/problems/combinations/
+let backtracking=(combinations, pick, pos, n, k)=>{
+    if(pick.length === k){
+        combinations.push([...pick])
+    }
+    for(let i=pos; i<n+1; i++){
+        pick.push(i)
+        backtracking(combinations, pick, i+1, n, k)
+        pick.pop();
+    }
+}
+let combine = function(n, k) {
+    let combinations = [], pick = []
+    backtracking(combinations, pick, 1, n, k)
+    return combinations
+};
