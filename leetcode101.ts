@@ -706,3 +706,34 @@ let combine = function(n, k) {
     backtracking(combinations, pick, 1, n, k)
     return combinations
 };
+
+//https://leetcode.com/problems/word-search/
+let backtrackingWS = (board, word, visited, i, j, word_pos)=>{
+    if(i<0 || i>= board.length || j<0 || j>=board[0].length || visited[i][j] || board[i][j]!==word[word_pos]){
+        return false;
+    }
+    if(word_pos === word.length -1){
+        return true;
+    }
+    visited[i][j]=true;
+    if(backtrackingWS(board, word, visited, i-1, j, word_pos+1)||backtrackingWS(board, word, visited, i+1, j, word_pos+1)|| backtrackingWS(board, word, visited, i, j-1, word_pos+1)||backtrackingWS(board, word, visited, i, j+1, word_pos+1)){
+        return true;
+    };
+    visited[i][j]=false;
+    return false;
+};
+let exist = function(board, word) {
+    if (board.length === 0 || word.length === 0) {
+        return false;
+    }
+    let m = board.length, n = board[0].length;
+    let visited = new Array(m).fill().map(() => new Array(n).fill(false));
+    for(let i = 0; i<m; i++){
+        for(let j = 0; j<n; j++){
+            if(backtrackingWS(board, word, visited, i, j, 0)){
+                return true;
+            }
+        }
+    }
+    return false;
+};
