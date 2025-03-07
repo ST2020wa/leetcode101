@@ -737,3 +737,31 @@ let exist = function(board, word) {
     }
     return false;
 };
+
+//https://leetcode.com/problems/n-queens/description/
+let backtrackingQ=(solutions, board, column, ldiag, rdiag, row)=>{
+    const n = board.length;
+    if(row === n){
+        solutions.push(board.map(row => row.join('')));
+        return;
+    }
+    for(let i = 0; i<n; i++){
+        if(column[i]||ldiag[n-row+i-1]||rdiag[row +i]){
+            continue
+        }
+        board[row][i]="Q"
+        column[i]=ldiag[n-row+i-1]=rdiag[row+i]=true;
+        backtrackingQ(solutions, board, column, ldiag, rdiag, row+1)
+        board[row][i]="."
+        column[i]=ldiag[n-row+i-1]=rdiag[row+i]=false;
+    }
+}
+let solveNQueens = function(n) {
+    const solutions = [];
+    const board = new Array(n).fill().map(()=> new Array(n).fill('.'));
+    const column = new Array(n).fill(false);
+    const ldiag = new Array(2*n - 1).fill(false);
+    const rdiag = new Array(2*n - 1).fill(false);
+    backtrackingQ(solutions, board, column, ldiag, rdiag, 0);
+    return solutions;
+};
