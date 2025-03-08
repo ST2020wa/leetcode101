@@ -765,3 +765,33 @@ let solveNQueens = function(n) {
     backtrackingQ(solutions, board, column, ldiag, rdiag, 0);
     return solutions;
 };
+
+//https://leetcode.com/problems/shortest-path-in-binary-matrix/
+let shortestPathBinaryMatrix = function(grid) {
+    if(grid[0][0]===1)return -1;
+    let m = grid.length, n = grid[0].length, dist = 0, q = [];
+    q.push([0,0]);
+    grid[0][0] = -1;
+    let count = q.length;
+    while(count > 0){
+        dist++;
+        while(count > 0){
+            count--;
+            let [r, c] = q.shift();
+            if(r === m-1 && c === n-1){
+                return dist;
+            } 
+            for(dx=-1;dx<2;dx++){
+                for(dy=-1;dy<2;dy++){
+                    if(dx === 0 && dy === 0)continue;
+                    let x=r+dx, y=c+dy;
+                    if(x<0 || y<0 || x>=m || y>=n || grid[x][y]!==0)continue;
+                    grid[x][y]=-1;
+                    q.push([x, y])
+                }
+            }
+        }
+        count = q.length;
+    }
+    return -1;
+};
