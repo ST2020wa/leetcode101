@@ -795,3 +795,51 @@ let shortestPathBinaryMatrix = function(grid) {
     }
     return -1;
 };
+
+// https://leetcode.com/problems/shortest-bridge/
+let ShortestBridge=()=>{
+    let direction = [-1,0,1,0,-1];
+let dfs=(points, grid, i, j)=>{
+   let m = grid.length, n = grid[0].length;
+   if(i<0 || i>=m || j<0 || j>= n || grid[i][j]===2)return;
+   if(grid[i][j]===0){
+       points.push([i,j]);return;
+       }
+   grid[i][j]=2;
+   for(let k = 0; k<4; k++){
+       dfs(points, grid, i+direction[k], j+direction[k+1])
+   }
+}
+let shortestBridge = function(grid) {
+   let m = grid.length, n = grid[0].length, points = [], flipped = false;
+   for(let i = 0; i<m; i++){
+       if(flipped)break;
+       for(let j = 0; j<n; j++){
+           if(grid[i][j]===1){
+               dfs(points, grid, i, j);
+               flipped = true;
+               break;
+           }
+       }
+   }
+   let level = 0;
+   while(points.length > 0){
+       level++;
+       let pointCurrent = points.length;
+       for(let i=0; i<pointCurrent; i++){
+           let [r,c]=points.shift();
+           grid[r][c]=2;
+           for(let k = 0; k<4; k++){
+               let x = r+direction[k], y=c+direction[k+1];
+               if(x>=0&&x<m&&y>=0&&y<n){
+                   if(grid[x][y]===2)continue;
+                   if(grid[x][y]===1)return level;
+                   grid[x][y]=2;
+                   points.push([x,y])
+               }
+           }
+       }
+   }
+   return level;
+};
+}
