@@ -869,3 +869,26 @@ let surroundedRegions = ()=>{
             }
     }
 }
+
+//https://leetcode.com/problems/binary-tree-paths/
+let binaryTreePath = ()=>{
+    let binaryTreePaths = function(root) {
+        const paths=[];
+   let dfs=(node,currentPath)=>{
+       if(!node)return;
+       currentPath += node.val;
+       if(!node.left&&!node.right){
+           paths.push(currentPath);
+           return;
+       }
+       if(node.left){
+           dfs(node.left, currentPath + "->");
+       }
+       if(node.right){
+           dfs(node.right, currentPath + '->')
+       }
+   }
+   dfs(root, "");
+   return paths;
+   };
+}
