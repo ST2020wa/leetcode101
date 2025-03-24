@@ -892,3 +892,23 @@ let binaryTreePath = ()=>{
    return paths;
    };
 }
+
+//https://leetcode.com/problems/climbing-stairs/
+let climbStairs = function(n) {
+    let arr= new Array(n+1).fill(1);
+    for(let i=2;i<=n;i++){
+        arr[i]=arr[i-2]+arr[i-1]
+    }
+    return arr[n];
+};
+
+//https://leetcode.com/problems/house-robber/description/
+let rob = function(nums) {
+    let pre_pre = 0, pre = 0, cur = 0;
+    for(let i = 0; i<nums.length; i++){
+        cur = Math.max(pre_pre+nums[i], pre)
+        pre_pre = pre;
+        pre = cur;
+    }
+    return cur;
+};
