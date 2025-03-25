@@ -912,3 +912,38 @@ let rob = function(nums) {
     }
     return cur;
 };
+
+//https://leetcode.com/problems/arithmetic-slices/
+let numberOfArithmeticSlices = function(nums) {
+    let n = nums.length;
+    let dp = new Array(n).fill(0);
+    for(let i = 2; i<n; i++){
+        if(nums[i]-nums[i-1]===nums[i-1]-nums[i-2]){
+            dp[i]=dp[i-1]+1
+        }
+    }
+    return dp.reduce((a, c) => a + c,0,)
+};
+
+//https://leetcode.com/problems/minimum-path-sum/
+let minPathSum = function(grid) {
+    let m = grid.length, n = grid[0].length;
+    const dp = new Array(m);
+    for(let i = 0; i<m; i++){
+        dp[i]=new Array(n).fill(0);
+    }
+    for(let i = 0; i<m; i++){
+        for(let j= 0; j<n; j++){
+            if(i===j&&i===0){
+                dp[i][j]=grid[i][j]
+            }else if (i===0){
+                dp[i][j]=grid[i][j]+dp[i][j-1]
+            }else if(j===0){
+                dp[i][j]=grid[i][j]+dp[i-1][j]
+            }else{
+                dp[i][j]=grid[i][j]+Math.min(dp[i][j-1], dp[i-1][j])
+            }
+        }
+    }
+    return dp[m-1][n-1]
+};
