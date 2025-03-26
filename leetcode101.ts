@@ -947,3 +947,67 @@ let minPathSum = function(grid) {
     }
     return dp[m-1][n-1]
 };
+
+//https://leetcode.com/problems/01-matrix/
+let updateMatrix = function(mat) {
+    let m = mat.length, n=mat[0].length;
+    const dp = [];
+    for (let i = 0; i < m; i++) {
+    dp.push(Array(n).fill(Number.MAX_SAFE_INTEGER - 1));
+    }
+    for(let i = 0; i<m; i++){
+        for(let j=0; j<n; j++){
+            if(mat[i][j]!==0){
+                            if(i>0){
+                dp[i][j]=Math.min(dp[i][j], dp[i-1][j]+1)
+            }
+            if(j>0){
+                dp[i][j]=Math.min(dp[i][j], dp[i][j-1]+1)
+            }
+            }else{
+                dp[i][j]=0;
+            }
+        }
+    }
+        for(let i = m-1; i>=0; i--){
+        for(let j=n-1; j>=0; j--){
+            if(mat[i][j]!==0){
+                            if(i<m-1){
+                dp[i][j]=Math.min(dp[i][j], dp[i+1][j]+1)
+            }
+            if(j<n-1){
+                dp[i][j]=Math.min(dp[i][j], dp[i][j+1]+1)
+            }
+            }
+        }
+    }
+    return dp;
+};
+
+//https://leetcode.com/problems/maximal-square/
+let maximalSquare = function(matrix) {
+    let m = matrix.length, n=matrix[0].length;
+    let max=0;
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+    for(let i=1; i<m+1; i++){
+        for(let j=1; j<n+1; j++){
+            if(matrix[i-1][j-1]==="1"){
+                dp[i][j] = Math.min(dp[i-1][j-1], dp[i][j-1], dp[i-1][j]) + 1;
+            }
+            max=Math.max(max, dp[i][j])
+        }
+    }
+    return max*max;
+};
+
+//https://leetcode.com/problems/perfect-squares/
+let numSquares = function(n) {
+    const dp = Array(n + 1).fill(Number.MAX_SAFE_INTEGER);
+    dp[0]=0;
+    for(let i = 1; i<n+1; i++){
+        for(let j=1; j<Math.floor(Math.sqrt(i))+1; j++){
+            dp[i]=Math.min(dp[i], dp[i-j*j]+1)
+        }
+    }
+    return dp[n];
+};
