@@ -1011,3 +1011,39 @@ let numSquares = function(n) {
     }
     return dp[n];
 };
+
+//https://leetcode.com/problems/word-break/
+let wordBreak = function(s, wordDict) {
+    let n = s.length;
+    const dp = new Array(n+1).fill(false);
+    dp[0]=true;
+    for(let i = 1; i<=n; i++){
+        for(let word of wordDict){
+            let m= word.length;
+            if(i>=m && s.substring(i-m, i)===word){
+                dp[i]=dp[i-m]
+            }
+            if(dp[i]){
+                break;
+            }
+        }
+    }
+    return dp[n];
+};
+
+//https://leetcode.com/problems/filling-bookcase-shelves
+let minHeightShelves = function(books, shelfWidth) {
+    let n = books.length;
+    const dp = new Array(n+1).fill(0);
+    for(let i=1; i<=n; i++){
+        let w= books[i-1][0], h=books[i-1][1];
+        dp[i]=dp[i-1]+h;
+        for(let j=i-1;j>0;j--){
+            w += books[j-1][0]; // Add width of book[j-1]
+            if (w > shelfWidth) break; // Stop if exceeds shelf width
+            h = Math.max(h, books[j-1][1]); // Update max height in current shelf
+            dp[i] = Math.min(dp[i], dp[j-1] + h); // Compare with placing books[j..i] on the same shelf
+        }
+    }
+    return dp[n]
+};
