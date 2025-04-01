@@ -1047,3 +1047,60 @@ let minHeightShelves = function(books, shelfWidth) {
     }
     return dp[n]
 };
+
+//https://leetcode.com/problems/combination-sum-iv/description/
+let combinationSum4 = function(nums, target) {
+    const dp=new Array(target+1).fill(0);
+    dp[0]=1;
+    for(let i=1; i<target+1; i++){
+        for(num of nums){
+            if(num<=i){
+                dp[i]+=dp[i-num]
+            }
+        }
+    }
+    return dp[target];
+};
+
+//https://leetcode.com/problems/longest-increasing-subsequence/
+()=>{
+    //time complex O(n2)
+    let lengthOfLIS = function(nums) {
+        let result=0, n=nums.length;
+        const dp=new Array(n).fill(1)
+        for(let i=0; i<n; i++){
+            for(let j=0; j<i; j++){
+                if(nums[i]>nums[j]){
+                    dp[i] = Math.max(dp[i], dp[j]+1)
+                }
+            }
+            result =Math.max(result, dp[i]);
+        }
+        return result;
+    };
+}
+()=>{
+    // time complex is lower: O(n log n)
+    let lengthOfLIS = function(nums) {
+        let dp = [nums[0]];
+        for (const num of nums) {
+            if (num > dp[dp.length - 1]) {
+                dp.push(num);
+            } else {
+                // Binary search to find the insertion point
+                let left = 0;
+                let right = dp.length-1;
+                if(left<right){
+                    const mid = Math.floor((left+right)/2)
+                    if(dp[mid]<num){
+                        left = mid+1;
+                    }else{
+                        right=mid;
+                    }
+                }
+                dp[left]=num;
+            }
+        }
+        return dp.length;
+    };
+}
