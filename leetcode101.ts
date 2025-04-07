@@ -1090,7 +1090,7 @@ let combinationSum4 = function(nums, target) {
                 // Binary search to find the insertion point
                 let left = 0;
                 let right = dp.length-1;
-                if(left<right){
+                while(left<right){
                     const mid = Math.floor((left+right)/2)
                     if(dp[mid]<num){
                         left = mid+1;
@@ -1104,3 +1104,37 @@ let combinationSum4 = function(nums, target) {
         return dp.length;
     };
 }
+
+//https://leetcode.com/problems/longest-common-subsequence/
+let longestCommonSubsequence = function(text1, text2) {
+    const m = text1.length; const n=text2.length;
+    const dp = new Array(m+1).fill().map(() => new Array(n+1).fill(0));
+    for(let i = 1; i<m+1; i++){
+        for(let j=1; j<n+1; j++){
+            if(text1[i-1]===text2[j-1]){
+                dp[i][j]=dp[i-1][j-1]+1
+            }else{
+                dp[i][j]=Math.max(dp[i-1][j], dp[i][j-1])
+            }
+        }
+    }
+    return dp[m][n];
+};
+
+//https://leetcode.com/problems/partition-equal-subset-sum
+let canPartition = function(nums) {
+    const numsSum = nums.reduce((a,c)=> a+c, 0);
+    if(numsSum % 2 !== 0){
+        return false;
+    }
+    const sum = numsSum/2;
+    const n = nums.length;
+    const dp = new Array(sum+1).fill(false);
+    dp[0]=true;
+    for(let i = 1; i<=n; i++){
+        for(let j=sum; j>=nums[i-1]; j--){
+            dp[j]=dp[j]||dp[j-nums[i-1]]
+        }
+    }
+    return dp[sum]
+};
