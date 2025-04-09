@@ -1138,3 +1138,98 @@ let canPartition = function(nums) {
     }
     return dp[sum]
 };
+
+//https://leetcode.com/problems/ones-and-zeroes/
+let findMaxForm = function(strs, m, n) {
+    //m->0 n->1
+    const dp = new Array(m+1).fill().map(()=> Array(n+1).fill(0));
+    for(const s of strs){
+        let zeros = 0, ones = 0;
+        for(const char of s){
+            if(char==='0'){
+                zeros++;
+            }else{
+                ones++;
+            }
+        }
+        for(let i=m; i>=zeros; i--){
+            for(let j=n; j>=ones; j--){
+                dp[i][j]=Math.max(dp[i][j], dp[i-zeros][j-ones]+1)
+            }
+        }
+    }
+    return dp[m][n];
+};
+
+//https://leetcode.com/problems/ones-and-zeroes/
+let findMaxForm = function(strs, m, n) {
+    //m->0 n->1
+    const dp = new Array(m+1).fill().map(()=> Array(n+1).fill(0));
+    for(const s of strs){
+        let zeros = 0, ones = 0;
+        for(const char of s){
+            if(char==='0'){
+                zeros++;
+            }else{
+                ones++;
+            }
+        }
+        for(let i=m; i>=zeros; i--){
+            for(let j=n; j>=ones; j--){
+                dp[i][j]=Math.max(dp[i][j], dp[i-zeros][j-ones]+1)
+            }
+        }
+    }
+    return dp[m][n];
+};
+
+//https://leetcode.com/problems/coin-change/
+let coinChange = function(coins, amount) {
+    const dp = new Array(amount+1).fill(amount+1);
+    dp[0]=0;
+    for(let i = 1; i<=amount; i++){
+        for(let coin of coins){
+            if(i>=coin){
+                dp[i]=Math.min(dp[i], dp[i-coin]+1);
+            }
+        }
+    }
+    return dp[amount]!==amount + 1? dp[amount]: -1;
+};
+
+//https://leetcode.com/problems/edit-distance/
+let minDistance = function(word1, word2) {
+    const m= word1.length;
+    const n= word2.length;
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+    for(let i=0; i<=m; i++){
+        for(let j=0; j<=n; j++){
+            if(i===0 || j===0){
+                dp[i][j]=i+j;
+            }else{
+                dp[i][j]=dp[i-1][j-1]+(word1[i-1]!==word2[j-1]);
+                dp[i][j] = Math.min(dp[i][j], dp[i - 1][j] + 1);
+                dp[i][j] = Math.min(dp[i][j], dp[i][j - 1] + 1);
+            }
+        }
+    }
+    return dp[m][n];
+};
+
+//https://leetcode.com/problems/2-keys-keyboard/
+let minSteps = function(n) {
+    const dp = new Array(n+1).fill(0);
+    for(let i=2; i<=n; i++){
+        dp[i]=i;
+        for(let i=2; i<=n; i++){
+            dp[i]=i;
+            for(let j=2; j*j<=i; j++){
+                if(i%j===0){
+                    dp[i]=dp[j]+dp[i/j];
+                    break;
+                }
+            }
+        }
+    }
+    return dp[n];
+};
