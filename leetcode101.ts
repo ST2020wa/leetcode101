@@ -1233,3 +1233,13 @@ let minSteps = function(n) {
     }
     return dp[n];
 };
+
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+let maxProfit = function(prices) {
+    let buy = -Infinity, sell = 0;
+    for(let price of prices){
+        buy = Math.max(buy, -price);
+        sell = Math.max(sell, buy+price);
+    }
+    return sell;
+};
