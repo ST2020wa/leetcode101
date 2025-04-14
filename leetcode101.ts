@@ -1235,11 +1235,81 @@ let minSteps = function(n) {
 };
 
 //https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-let maxProfit = function(prices) {
-    let buy = -Infinity, sell = 0;
-    for(let price of prices){
-        buy = Math.max(buy, -price);
-        sell = Math.max(sell, buy+price);
+()=>{
+    let maxProfit = function(prices) {
+        let buy = -Infinity, sell = 0;
+        for(let price of prices){
+            buy = Math.max(buy, -price);
+            sell = Math.max(sell, buy+price);
+        }
+        return sell;
+    };
+}
+
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
+()=>{
+    let maxProfit = function(k, prices) {
+        const days = prices.length;
+        const buy = new Array(k+1).fill(-Infinity);
+        const sell = new Array(k+1).fill(0);
+    
+        for(let i=0; i<days; i++){
+            for(let j=1; j<=k; j++){
+                buy[j]=Math.max(buy[j], sell[j-1]-prices[i]);
+                sell[j]=Math.max(sell[j],buy[j]+prices[i]);
+            }
+        }
+        return sell[k];
+    };
+}
+
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+()=>{
+    let maxProfit = function(prices) {
+        const n = prices.length;
+        if(n===0){return;}
+        let buy= new Array(n).fill(0);
+        let sell= new Array(n).fill(0);
+        let s1= new Array(n).fill(0);
+        let s2 = new Array(n).fill(0);
+        /*
+        buy[i]: after brought,
+        s1[i]: ready to sell,
+        sell[i]: after sell,
+        s2[i]: cool down completed, ready to buy
+        */
+        s1[0]=buy[0]=-prices[0];
+        sell[0] = s2[0]=0;
+        for(let i = 1; i<n; i++){
+            buy[i]=s2[i-1]-prices[i];
+            s1[i]=Math.max(buy[i-1], s1[i-1]);
+            sell[i]=Math.max(buy[i-1], s1[i-1])+prices[i]
+            s2[i]=Math.max(s2[i-1], sell[i-1]);
+        }
+        return Math.max(sell[n-1], s2[n-1]);
+    };
+}
+
+//https://leetcode.com/problems/house-robber-ii/
+()=>{
+    let rob = function(nums) {
+        const n=nums.length;
+        if(n===0){return 0;}
+        if(n===1){return nums[0];}
+        /*
+        the solution is either rob house 0 to n-2, or 1 to n-1
+        */
+        return Math.max(robHelper(nums, 0, nums.length-2), robHelper(nums, 1, nums.length-1))
+    };
+    let robHelper=(nums, start, end)=>{
+        if(start>end) return 0;
+        let prev1=0; // max profit if robbed previous house;
+        let prev2=0; // max profit if didn't rob the previous;
+        for(let i = start; i<=end; i++){
+            const current = Math.max(prev1, prev2+nums[i]);
+            prev2=prev1;
+            prev1=current;
+        }
+        return prev1;
     }
-    return sell;
-};
+}
