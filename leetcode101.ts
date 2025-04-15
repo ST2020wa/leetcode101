@@ -1313,3 +1313,74 @@ let minSteps = function(n) {
         return prev1;
     }
 }
+
+//https://leetcode.com/problems/maximum-subarray/
+()=>{
+    let maxSubArray = function(nums) {
+        const n = nums.length;
+        if (n === 1) {
+            return nums[0];
+        }
+    
+        // Initialize DP array to store maximum sum ending at each index
+        const dp = new Array(n).fill(0);
+        dp[0] = nums[0];
+        let maxSum = dp[0];
+    
+        for (let i = 1; i < n; i++) {
+            // Maximum sum ending at current position is either:
+            // 1. The current number alone, or
+            // 2. The current number + maximum sum ending at previous position
+            dp[i] = Math.max(nums[i], dp[i-1] + nums[i]);
+            
+            // Update global maximum
+            maxSum = Math.max(maxSum, dp[i]);
+        }
+    
+        return maxSum;
+    };
+}
+
+//https://leetcode.com/problems/integer-break/
+()=>{
+    const integerBreak = function(n) {
+    if (n === 2) return 1;  // 1 * 1 = 1
+    if (n === 3) return 2;  // 1 * 2 = 2
+    
+    const dp = new Array(n + 1).fill(0);
+    dp[1] = 1;  // Base case
+    dp[2] = 1;  // Manually set for n=2
+    dp[3] = 2;  // Manually set for n=3
+    
+    for (let i = 4; i <= n; i++) {
+        for (let j = 1; j < i; j++) {
+            // Compare:
+            // 1. j * (i-j) → Split into two parts
+            // 2. j * dp[i-j] → Split i-j further
+            dp[i] = Math.max(dp[i], j * (i - j), j * dp[i - j]);
+        }
+    }
+    
+    return dp[n];
+};
+}
+
+//https://leetcode.com/problems/delete-operation-for-two-strings/
+()=>{
+    let minDistance = function(word1, word2) {
+        const m=word1.length;
+        const n=word2.length;
+            const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+        for(let i=1; i<=m; i++){
+            for(let j=1; j<=n; j++){
+                if (word1[i - 1] === word2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        const lcsLength = dp[m][n];
+        return (m - lcsLength) + (n - lcsLength);
+    };
+}
